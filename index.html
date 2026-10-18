@@ -244,14 +244,8 @@
   </div>
 
   <script>
-    // =========================================================================
-    // NƠI DÁN LINK FIREBASE: Bạn copy link Firebase dán vào giữa 2 dấu nháy đơn dưới đây:
-    // Ví dụ: const DEFAULT_FIREBASE_URL = 'https://kho-hang- Long-default-rtdb.firebaseio.com';
-    // =========================================================================
-    const DEFAULT_FIREBASE_URL = 'https://khohang-6d2c4-default-rtdb.firebaseio.com'; 
-
     let inventory = [];
-    let dbUrl = localStorage.getItem('fb_inventory_db_url') || DEFAULT_FIREBASE_URL;
+    let dbUrl = localStorage.getItem('fb_inventory_db_url') || '';
 
     const formatCurrency = (val) => new Intl.NumberFormat('vi-VN').format(Math.round(val || 0)) + ' ₫';
     const todayStr = new Date().toISOString().split('T')[0];
@@ -268,6 +262,7 @@
       }
     });
 
+    // Thông báo góc màn hình Cyber Toast
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const colors = {
@@ -308,6 +303,7 @@
       if (dbUrl) fetchFromFirebase();
     }
 
+    // Tải dữ liệu từ Firebase
     async function fetchFromFirebase() {
       if (!dbUrl) return;
       updateSyncStatus("ĐANG ĐỒNG BỘ...", "text-amber-400", "bg-amber-400 animate-pulse");
@@ -329,6 +325,7 @@
       }
     }
 
+    // Thêm sản phẩm mới
     async function handleAddProduct(e) {
       e.preventDefault();
       const name = document.getElementById('addName').value.trim();
@@ -367,6 +364,7 @@
       showToast(`Đã thêm [${name}] vào kho!`, "success");
     }
 
+    // Tăng/giảm số lượng nhanh
     async function updateQuantity(id, delta) {
       const idx = inventory.findIndex(item => item.id === id);
       if (idx === -1) return;
@@ -386,6 +384,7 @@
       }
     }
 
+    // Cập nhật từng trường trực tiếp trên bảng
     async function updateField(id, field, value) {
       const item = inventory.find(i => i.id === id);
       if (item) item[field] = value;
@@ -402,6 +401,7 @@
       }
     }
 
+    // Xóa sản phẩm
     async function deleteItem(id) {
       const item = inventory.find(i => i.id === id);
       if (!confirm(`Bạn có chắc muốn xóa [${item ? item.name : ''}] khỏi kho?`)) return;
@@ -416,6 +416,7 @@
       }
     }
 
+    // Render Bảng & Thẻ Mobile
     function renderTable() {
       const keyword = (document.getElementById('searchInput').value || '').toLowerCase();
       const tbody = document.getElementById('inventoryList');
@@ -424,6 +425,7 @@
       tbody.innerHTML = '';
       mobileList.innerHTML = '';
 
+      // Tính tổng giá trị toàn kho
       const totalInventoryValue = inventory.reduce((sum, item) => {
         const qty = parseFloat(item.quantity) || 0;
         const prc = parseFloat(item.price) || 0;
@@ -450,6 +452,7 @@
         const price = parseFloat(item.price) || 0;
         const lineTotal = qty * price;
 
+        // Dòng trên bảng máy tính
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-dark-850/60 transition-colors border-b border-slate-800/80 group';
         tr.innerHTML = `
@@ -500,6 +503,7 @@
         `;
         tbody.appendChild(tr);
 
+        // Thẻ trên điện thoại
         const mCard = document.createElement('div');
         mCard.className = 'p-4 space-y-2.5 bg-dark-900/60';
         mCard.innerHTML = `
@@ -529,6 +533,7 @@
       });
     }
 
+    // Sao chép báo cáo tồn kho gửi Zalo
     function copyMainInventoryText() {
       if (inventory.length === 0) return showToast("Kho đang trống!", "warn");
       const totalVal = inventory.reduce((s, i) => s + ((parseFloat(i.quantity) || 0) * (parseFloat(i.price) || 0)), 0);
@@ -540,9 +545,10 @@
       navigator.clipboard.writeText(text).then(() => showToast("Đã sao chép báo cáo tồn kho!", "success"));
     }
 
+    // Xuất file Excel (.csv UTF-8)
     function exportMainInventoryExcel() {
       if (inventory.length === 0) return showToast("Kho đang trống!", "warn");
-      let csv = "STT,Tên sản phẩm,Số lượng,ĐVT,Đơn giá (VNĐ),Thành tiền (VNĐ),Ghi chú\r\.net\r\n";
+      let csv = "STT,Tên sản phẩm,Số lượng,ĐVT,Đơn giá (VNĐ),Thành tiền (VNĐ),Ghi chú\r\n";
       inventory.forEach((item, idx) => {
         const lineTotal = (parseFloat(item.quantity) || 0) * (parseFloat(item.price) || 0);
         csv += `"${idx + 1}","${item.name}","${item.quantity}","${item.unit || ''}","${item.price || 0}","${lineTotal}","${(item.note || '').replace(/"/g, '""')}"\r\n`;
