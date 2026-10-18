@@ -100,7 +100,7 @@
           <h1 class="text-lg sm:text-xl font-bold text-white tracking-wide font-tech uppercase">
             Hệ Thống Kho & Tiến Độ Nhận Hàng
           </h1>
-          <p class="text-xs text-slate-400 font-mono">Realtime Firebase &bull; Quét ảnh hóa đơn &bull; Quy đổi tự động</p>
+          <p class="text-xs text-slate-400 font-mono">Realtime Firebase &bull; Quét ảnh hóa đơn khử Watermark &bull; Quy đổi tự động</p>
         </div>
       </div>
       
@@ -214,7 +214,7 @@
         </table>
       </div>
 
-      <!-- Mobile Card View (Tối ưu hiển thị trên điện thoại) -->
+      <!-- Mobile Card View -->
       <div id="inventoryMobileList" class="md:hidden divide-y divide-slate-800/80"></div>
 
       <div id="emptyRow" class="hidden py-16 text-center text-slate-500 text-sm font-mono">
@@ -244,7 +244,6 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <!-- NÚT MỞ MODAL QUÉT ẢNH ĐƠN HÀNG -->
           <button onclick="openImageScannerModal()" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400 text-cyan-glow rounded-xl text-xs font-mono font-bold transition flex items-center gap-1.5 shadow-glow-cyan-sm">
             <i class="fa-solid fa-camera-retro"></i> Nhập Bằng Ảnh Đơn Hàng
           </button>
@@ -258,7 +257,7 @@
       <!-- Drawer Body -->
       <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-5">
 
-        <!-- 1. BẢNG TỔNG HỢP THEO TỪNG MẶT HÀNG (Có nút thu gọn) -->
+        <!-- 1. BẢNG TỔNG HỢP THEO TỪNG MẶT HÀNG -->
         <div class="bg-dark-900 border border-sky-500/40 rounded-2xl overflow-hidden shadow-glow-cyan-sm">
           <div class="p-3 px-4 bg-dark-850 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
             <button onclick="toggleSection('summarySectionBody', 'summaryToggleIcon')" class="flex items-center gap-2 text-left">
@@ -306,7 +305,7 @@
           </div>
         </div>
         
-        <!-- 2. KHU VỰC ĐĂNG KÝ MÓN HÀNG VÀO NGÀY NHẬN (Nhập Form / Nhập Chuỗi Nhanh / Quét Ảnh) -->
+        <!-- 2. KHU VỰC ĐĂNG KÝ MÓN HÀNG VÀO NGÀY NHẬN -->
         <div class="bg-dark-950/80 rounded-2xl border border-amber-500/30 overflow-hidden shadow-sm">
           <div class="p-3 px-4 bg-dark-850/80 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
             <button onclick="toggleSection('addPendingSectionBody', 'addPendingToggleIcon')" class="font-mono text-[11px] text-neon-amber font-semibold flex items-center gap-2 uppercase tracking-wider">
@@ -328,7 +327,6 @@
           </div>
 
           <div id="addPendingSectionBody" class="p-4 space-y-4">
-            <!-- Chế độ 1: Form chọn món chuẩn -->
             <form id="pendingForm" onsubmit="handleAddPendingItem(event)" class="space-y-3">
               <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                 <div class="sm:col-span-3">
@@ -383,7 +381,6 @@
               </div>
             </form>
 
-            <!-- Chế độ 2: Nhập nhanh bằng dòng văn bản -->
             <div id="quickTextBox" class="hidden space-y-3">
               <p class="text-[11px] font-mono text-slate-400">
                 Nhập mỗi dòng 1 ngày theo cú pháp: <code class="text-cyan-glow">07/10: 3.5T chanh + 1T đào + 2 túi Homey</code>
@@ -428,7 +425,7 @@
     </div>
   </aside>
 
-  <!-- MODAL QUÉT HÌNH ẢNH HÓA ĐƠN BÁN LẺ (OCR + AI VISION) -->
+  <!-- MODAL QUÉT HÌNH ẢNH HÓA ĐƠN BÁN LẺ (ĐÃ TÍCH HỢP LỌC WATERMARK MASAN) -->
   <div id="imageScannerModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[70] flex items-center justify-center p-3 sm:p-6 hidden">
     <div class="bg-dark-900 border border-cyan-400/50 rounded-2xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-glow-cyan overflow-hidden">
       
@@ -442,7 +439,7 @@
             <h3 class="text-base font-bold text-white font-tech uppercase tracking-wide">
               Quét Ảnh Hóa Đơn Bán Lẻ Vào Hàng Chờ Nhận
             </h3>
-            <p class="text-xs font-mono text-slate-400">Hỗ trợ mẫu Hóa Đơn Minh Phát Thành (Masan) &bull; Chọn ảnh hoặc bấm Ctrl+V để dán ảnh</p>
+            <p class="text-xs font-mono text-slate-400">Đã tích hợp bộ lọc khử logo chìm Masan &bull; Chọn ảnh hoặc bấm Ctrl+V để dán ảnh</p>
           </div>
         </div>
         <button onclick="closeImageScannerModal()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-dark-800">
@@ -453,12 +450,12 @@
       <!-- Modal Body -->
       <div class="p-5 overflow-y-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5">
         
-        <!-- Cột trái: Upload & Xem trước ảnh -->
+        <!-- Cột trái: Upload & Xem trước ảnh + Raw OCR Text -->
         <div class="lg:col-span-5 flex flex-col gap-3">
-          <label for="invoiceImageInput" class="border-2 border-dashed border-sky-500/40 hover:border-cyan-glow bg-dark-950/60 hover:bg-dark-850/50 rounded-2xl p-5 text-center cursor-pointer transition flex flex-col items-center justify-center min-h-[150px]">
-            <i class="fa-solid fa-cloud-arrow-up text-3xl text-cyan-400 mb-2"></i>
-            <span class="text-xs font-mono font-bold text-slate-200">Bấm để chọn ảnh hóa đơn hoặc Kéo thả vào đây</span>
-            <span class="text-[11px] font-mono text-slate-400 mt-1">Hoặc nhấn <kbd class="px-1.5 py-0.5 bg-dark-800 border border-slate-700 rounded text-cyan-glow">Ctrl + V</kbd> để dán ảnh chụp màn hình</span>
+          <label for="invoiceImageInput" class="border-2 border-dashed border-sky-500/40 hover:border-cyan-glow bg-dark-950/60 hover:bg-dark-850/50 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center min-h-[130px]">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl text-cyan-400 mb-1.5"></i>
+            <span class="text-xs font-mono font-bold text-slate-200">Bấm chọn ảnh hóa đơn hoặc Kéo thả vào đây</span>
+            <span class="text-[11px] font-mono text-slate-400 mt-1">Hoặc nhấn <kbd class="px-1.5 py-0.5 bg-dark-800 border border-slate-700 rounded text-cyan-glow">Ctrl + V</kbd> để dán ảnh</span>
             <input type="file" id="invoiceImageInput" accept="image/*" class="hidden" onchange="handleImageFileSelect(event)">
           </label>
 
@@ -466,7 +463,7 @@
           <div id="ocrStatusBox" class="hidden bg-dark-950 border border-slate-800 rounded-xl p-3 space-y-2">
             <div class="flex items-center justify-between text-xs font-mono">
               <span id="ocrStatusText" class="text-cyan-glow flex items-center gap-2">
-                <i class="fa-solid fa-spinner animate-spin"></i> Đang phân tích ảnh hóa đơn...
+                <i class="fa-solid fa-spinner animate-spin"></i> Đang lọc logo chìm & đọc chữ...
               </span>
               <span id="ocrProgressPct" class="text-slate-400">0%</span>
             </div>
@@ -476,8 +473,20 @@
           </div>
 
           <!-- Khung hiển thị ảnh xem trước -->
-          <div id="imagePreviewWrapper" class="hidden border border-slate-800 rounded-xl overflow-hidden bg-dark-950 flex-1 flex items-center justify-center max-h-[340px]">
-            <img id="invoicePreviewImg" src="" alt="Preview Hóa Đơn" class="max-h-[330px] w-auto object-contain">
+          <div id="imagePreviewWrapper" class="hidden border border-slate-800 rounded-xl overflow-hidden bg-dark-950 flex items-center justify-center max-h-[220px]">
+            <img id="invoicePreviewImg" src="" alt="Preview Hóa Đơn" class="max-h-[210px] w-auto object-contain">
+          </div>
+
+          <!-- Khung kiểm tra văn bản OCR thô (Giúp kiểm soát và sửa nhanh nếu cần) -->
+          <div class="bg-dark-950 border border-slate-800 rounded-xl p-3 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-slate-400 font-semibold">Văn bản đọc được từ ảnh (có thể sửa):</span>
+              <button type="button" onclick="reparseFromRawText()" class="px-2 py-0.5 bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-cyan-glow rounded text-[10px] font-mono">
+                <i class="fa-solid fa-rotate"></i> Phân tích lại văn bản này
+              </button>
+            </div>
+            <textarea id="rawOcrTextarea" rows="4" placeholder="Nội dung chữ quét từ hóa đơn sẽ hiện tại đây..."
+                      class="w-full bg-dark-900 border border-slate-800 rounded-lg p-2 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-cyan-400"></textarea>
           </div>
         </div>
 
@@ -506,7 +515,7 @@
               <span id="scannedTotalMoneyBadge" class="text-neon-mint font-bold">Tổng: 0 ₫</span>
             </div>
 
-            <div class="overflow-x-auto max-h-[300px] flex-1">
+            <div class="overflow-x-auto max-h-[320px] flex-1">
               <table class="w-full text-left text-xs border-collapse">
                 <thead class="bg-dark-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800 sticky top-0">
                   <tr>
@@ -550,7 +559,7 @@
     </div>
   </div>
 
-  <!-- MODAL NHẬN HÀNG (HỖ TRỢ NHẬN ĐỦ HOẶC NHẬN 1 PHẦN + QUY ĐỔI ĐVT) -->
+  <!-- MODAL NHẬN HÀNG -->
   <div id="receiveModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[80] flex items-center justify-center p-4 hidden">
     <div class="bg-dark-900 border border-emerald-500/40 rounded-2xl max-w-md w-full p-6 shadow-glow-mint relative space-y-4">
       <h3 class="text-base font-bold text-white font-tech uppercase flex items-center gap-2">
@@ -579,7 +588,7 @@
     </div>
   </div>
 
-  <!-- Modal cấu hình Firebase & Gemini API (Tùy chọn) -->
+  <!-- Modal cấu hình Firebase & Gemini API -->
   <div id="configModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[80] flex items-center justify-center p-4 hidden">
     <div class="bg-dark-900 border border-sky-500/40 rounded-2xl max-w-md w-full p-6 shadow-glow-cyan relative">
       <button onclick="toggleConfigModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
@@ -620,7 +629,6 @@
     let geminiKey = localStorage.getItem('fb_gemini_api_key') || '';
     let productRatios = JSON.parse(localStorage.getItem('prod_box_ratios') || '{}');
 
-    // Dữ liệu tạm trong Modal Quét Ảnh & Modal Nhận Hàng
     let scannedItems = [];
     let currentReceivingItemId = null;
 
@@ -648,11 +656,9 @@
         updateSyncStatus("OFFLINE (LocalStorage)", "text-amber-400", "bg-amber-400");
       }
 
-      // Lắng nghe sự kiện Ctrl+V để dán ảnh hóa đơn trực tiếp
       window.addEventListener('paste', handleClipboardPaste);
     });
 
-    // ================= THÔNG BÁO CYBER TOAST =================
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const colors = {
@@ -705,7 +711,6 @@
       }
     }
 
-    // Đồng bộ Hệ số quy đổi lên Firebase
     async function setProductRatio(prodName, ratioVal) {
       const val = parseFloat(ratioVal) || 0;
       productRatios[prodName] = val;
@@ -816,7 +821,6 @@
       });
     }
 
-    // Tự động điền ĐVT và Giá khi chọn sản phẩm
     function handlePendingProductChange() {
       const prodName = document.getElementById('pendingProdSelect').value.trim();
       const unitInput = document.getElementById('pendingUnit');
@@ -838,7 +842,6 @@
       }
     }
 
-    // Tự động tính lại đơn giá nếu người dùng đổi ĐVT từ Thùng sang lẻ hoặc ngược lại
     function handlePendingUnitChange() {
       const prodName = document.getElementById('pendingProdSelect').value.trim();
       const currentUnit = document.getElementById('pendingUnit').value.trim().toLowerCase();
@@ -865,7 +868,6 @@
       }
     }
 
-    // Tìm sản phẩm khớp tên thông minh
     function findBestInventoryMatch(queryName) {
       if (!queryName) return null;
       const q = queryName.toLowerCase().trim();
@@ -1000,7 +1002,6 @@
         const price = parseFloat(item.price) || 0;
         const lineTotal = qty * price;
 
-        // Desktop Row
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-dark-850/60 transition-colors border-b border-slate-800/80 group';
         tr.innerHTML = `
@@ -1051,7 +1052,6 @@
         `;
         tbody.appendChild(tr);
 
-        // Mobile Card
         const mCard = document.createElement('div');
         mCard.className = 'p-4 space-y-2.5 bg-dark-900/60';
         mCard.innerHTML = `
@@ -1081,7 +1081,6 @@
       });
     }
 
-    // Xuất tồn kho chính
     function copyMainInventoryText() {
       if (inventory.length === 0) return showToast("Kho chính đang trống!", "warn");
       const totalVal = inventory.reduce((s, i) => s + ((parseFloat(i.quantity) || 0) * (parseFloat(i.price) || 0)), 0);
@@ -1146,7 +1145,6 @@
       showToast(`Đã thêm [${quantity} ${unit} ${name}] vào ngày ${date}`, "success");
     }
 
-    // Phân tích chuỗi nhập nhanh (VD: 08/10: 6 túi Homey + 1.5T chanh)
     async function parseQuickTextOrders() {
       const raw = document.getElementById('quickTextInput').value.trim();
       if (!raw) return showToast("Vui lòng nhập nội dung chuỗi đơn hàng!", "warn");
@@ -1170,7 +1168,6 @@
 
         const segments = contentPart.split('+').map(s => s.trim()).filter(Boolean);
         for (const seg of segments) {
-          // Bóc tách: <SL> <ĐVT> <Tên món> (VD: 3.5T chanh, 6 túi Homey, 1 lốc mật ong)
           const m = seg.match(/^(\d+(?:[.,]\d+)?)\s*(T|thùng|thung|lốc|loc|túi|tui|chai|hộp|hop|gói|goi|lon|cái|cai)?\s+(.+)$/i);
           if (m) {
             const qty = parseFloat(m[1].replace(',', '.')) || 1;
@@ -1227,7 +1224,7 @@
       }
     }
 
-    // ================= NHẬN HÀNG (ĐỦ / 1 PHẦN) + QUY ĐỔI ĐVT + HOÀN TÁC =================
+    // ================= NHẬN HÀNG & QUY ĐỔI ĐVT =================
 
     function getConvertedQuantityForMainInventory(pendingItem, actualQtyToReceive) {
       const mainItem = findBestInventoryMatch(pendingItem.name);
@@ -1340,7 +1337,6 @@
         renderTable();
       }
 
-      // Kiểm tra nhận 1 phần hay nhận đủ
       if (actual < p.quantity) {
         const remainQty = Math.round((p.quantity - actual) * 100) / 100;
         p.quantity = remainQty;
@@ -1375,7 +1371,6 @@
       renderPendingCards();
     }
 
-    // Hoàn tác (Undo) món đã nhận
     async function undoReceivedItem(id) {
       const p = pendingOrders.find(item => item.id === id);
       if (!p || !p.received) return;
@@ -1449,7 +1444,7 @@
       }
     }
 
-    // ================= QUÉT HÌNH ẢNH HÓA ĐƠN (TESSERACT OCR + GEMINI VISION) =================
+    // ================= QUÉT HÌNH ẢNH HÓA ĐƠN (KHỬ WATERMARK + BÓC TÁCH ĐA TẦNG) =================
 
     function openImageScannerModal() {
       document.getElementById('imageScannerModal').classList.remove('hidden');
@@ -1477,6 +1472,54 @@
     function handleImageFileSelect(e) {
       const file = e.target.files[0];
       if (file) processInvoiceImageFile(file);
+      e.target.value = '';
+    }
+
+    // Tiền xử lý ảnh bằng Canvas: Phóng to 2x & Lọc bỏ toàn bộ logo chìm Masan + đường kẻ bảng nhạt
+    function preprocessInvoiceImageForOCR(dataUrl) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = 2;
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imgData.data;
+
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            const avg = (r + g + b) / 3;
+
+            // Giữ lại chữ đen/xanh đậm (avg < 160) hoặc chữ đỏ đậm của mã Số HĐ (HD-004)
+            const isDarkText = avg < 160;
+            const isRedText = (r > 140 && g < 95 && b < 95);
+
+            if (isDarkText || isRedText) {
+              // Chuyển thành đen tuyền giúp OCR đọc cực nhạy
+              d[i] = 0;
+              d[i + 1] = 0;
+              d[i + 2] = 0;
+            } else {
+              // Xóa sạch logo chìm Masan (xanh/cam nhạt) và màu nền bảng thành trắng tinh
+              d[i] = 255;
+              d[i + 1] = 255;
+              d[i + 2] = 255;
+            }
+          }
+
+          ctx.putImageData(imgData, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
     }
 
     async function processInvoiceImageFile(file) {
@@ -1494,17 +1537,17 @@
         previewWrapper.classList.remove('hidden');
         statusBox.classList.remove('hidden');
 
-        // Nếu người dùng có cấu hình Gemini API Key -> ưu tiên dùng Gemini Vision siêu chuẩn
+        // Nếu có Gemini API Key thì ưu tiên dùng AI Vision
         if (geminiKey) {
           try {
             statusText.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles animate-spin"></i> AI Vision đang đọc hóa đơn...`;
             progressBar.style.width = '60%';
             progressPct.innerText = 'AI';
             const parsed = await extractInvoiceWithGemini(base64DataUrl, file.type);
-            if (parsed) {
+            if (parsed && parsed.items && parsed.items.length > 0) {
               applyExtractedInvoiceData(parsed);
               statusBox.classList.add('hidden');
-              showToast("Đã đọc hóa đơn bằng AI thành công!", "success");
+              showToast(`AI đã đọc thành công ${parsed.items.length} mặt hàng!`, "success");
               return;
             }
           } catch (err) {
@@ -1512,10 +1555,14 @@
           }
         }
 
-        // Mặc định chạy Tesseract.js OCR trực tiếp trên trình duyệt
+        // Mặc định: Lọc bỏ Watermark bằng Canvas rồi chạy Tesseract OCR tiếng Việt
         try {
+          statusText.innerHTML = `<i class="fa-solid fa-filter animate-pulse"></i> Đang khử logo chìm Masan & làm nét chữ...`;
+          progressBar.style.width = '15%';
+          const cleanedDataUrl = await preprocessInvoiceImageForOCR(base64DataUrl);
+
           statusText.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang quét chữ tiếng Việt trên hóa đơn...`;
-          const result = await Tesseract.recognize(base64DataUrl, 'vie', {
+          const result = await Tesseract.recognize(cleanedDataUrl, 'vie', {
             logger: m => {
               if (m.status === 'recognizing text') {
                 const pct = Math.round((m.progress || 0) * 100);
@@ -1526,10 +1573,17 @@
           });
 
           const rawText = result.data.text || '';
+          document.getElementById('rawOcrTextarea').value = rawText;
+
           const parsed = parseMasanInvoiceText(rawText);
           applyExtractedInvoiceData(parsed);
           statusBox.classList.add('hidden');
-          showToast(`Đã bóc tách ${parsed.items.length} mặt hàng từ ảnh hóa đơn!`, "success");
+
+          if (parsed.items.length > 0) {
+            showToast(`Đã bóc tách thành công ${parsed.items.length} mặt hàng!`, "success");
+          } else {
+            showToast("Chưa nhận diện được dòng hàng tự động, hãy kiểm tra ô văn bản bên trái.", "warn");
+          }
         } catch (err) {
           console.error(err);
           statusText.innerHTML = `<span class="text-neon-rose">Lỗi khi đọc ảnh. Bạn có thể thêm dòng thủ công bên phải.</span>`;
@@ -1538,21 +1592,29 @@
       reader.readAsDataURL(file);
     }
 
-    // Bộ phân tích chuyên biệt cho mẫu HÓA ĐƠN BÁN LẺ - CÔNG TY TNHH MINH PHÁT THÀNH (Masan Consumer)
+    function reparseFromRawText() {
+      const rawText = document.getElementById('rawOcrTextarea').value || '';
+      if (!rawText.trim()) return showToast("Ô văn bản đang trống!", "warn");
+      const parsed = parseMasanInvoiceText(rawText);
+      applyExtractedInvoiceData(parsed);
+      showToast(`Đã phân tích lại: tìm thấy ${parsed.items.length} mặt hàng!`, "info");
+    }
+
+    // Thuật toán bóc tách Đa Tầng chuyên biệt cho mẫu Hóa Đơn Bán Lẻ Minh Phát Thành (Masan Consumer)
     function parseMasanInvoiceText(text) {
-      const lines = text.split(/\r?\n/).map(l => l.replace(/[|¦]/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean);
+      const rawLines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
       let invoiceDate = todayStr;
       let invoiceNo = '';
       const items = [];
 
-      // 1. Tìm Số HĐ (VD: Số HĐ: HD-004) và Ngày (VD: Ngày: 17/10/2026)
-      for (const line of lines) {
-        const hdMatch = line.match(/(?:Số\s*HĐ|So\s*HD|Mã\s*phiếu|HD)[:\s]*([A-Z0-9\-]{3,15})/i);
+      // 1. Quét Số HĐ (VD: HD-004) và Ngày (VD: 17/10/2026)
+      for (const line of rawLines) {
+        const hdMatch = line.match(/(?:Số\s*HĐ|So\s*HD|SỐ\s*HĐ|HD)\s*[:\-]?\s*(HD[\-\s]?\d+|\d{3,10})/i);
         if (hdMatch && !invoiceNo) {
-          invoiceNo = hdMatch[1].trim();
+          invoiceNo = hdMatch[1].replace(/\s+/g, '').toUpperCase();
         }
 
-        const dateMatch = line.match(/(?:Ngày|Ngay)[:\s]*(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/i);
+        const dateMatch = line.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](20\d{2})/);
         if (dateMatch) {
           const d = dateMatch[1].padStart(2, '0');
           const m = dateMatch[2].padStart(2, '0');
@@ -1561,42 +1623,96 @@
         }
       }
 
-      // 2. Bóc tách từng dòng sản phẩm trong bảng
-      // Mẫu chuẩn: [STT] [Tên hàng hóa, quy cách] [ĐVT: Chai/Thùng/Lốc/Túi/Gói/Hộp/Lon...] [SL] [Đơn giá] [Thành tiền]
-      const unitKeywords = 'Chai|Thùng|Thung|Lốc|Loc|Túi|Tui|Gói|Goi|Hộp|Hop|Lon|Cái|Cai|Bộ|Bo|Bình|Binh|Két|Ket|Vỉ|Vi';
-      const rowRegex = new RegExp(`^(?:\\d+\\s+)?(.+?)\\s+(${unitKeywords})\\s+(\\d+(?:[.,]\\d+)?)\\s+([\\d.,]+)\\s*[đ₫d]?\\s+([\\d.,]+)`, 'i');
+      // Từ khóa các dòng tiêu đề / chân trang cần bỏ qua
+      const ignorePattern = /(HÓA ĐƠN BÁN LẺ|KIÊM PHIẾU|CÔNG TY TNHH|MINH PHÁT THÀNH|Quốc lộ 1K|Nhà phân phối|MẪU PHIẾU|Khách hàng|Địa chỉ|Ghi chú đơn|TÊN HÀNG HÓA|Tổng SL xuất|Cộng tiền|Số tiền bằng chữ|TỔNG THANH TOÁN|NGƯỜI NHẬN|THỦ QUỸ|NGƯỜI LẬP|Vui lòng kiểm tra)/i;
 
-      for (const line of lines) {
-        if (/^(STT|TÊN HÀNG|Tổng SL|Số tiền bằng chữ|Khách hàng|Địa chỉ|CÔNG TY)/i.test(line)) continue;
+      for (let line of rawLines) {
+        if (ignorePattern.test(line)) continue;
 
-        const match = line.match(rowRegex);
-        if (match) {
-          const rawName = match[1].replace(/^[\d.\-]+\s*/, '').trim();
-          const unit = match[2].trim();
-          const quantity = parseFloat(match[3].replace(',', '.')) || 1;
-          // Xử lý dấu chấm phân cách phần nghìn của tiền Việt (VD: 4.791 -> 4791, 7.250 -> 7250)
-          const priceStr = match[4].replace(/[.,]/g, '');
-          const price = parseFloat(priceStr) || 0;
+        // Làm sạch ký tự kẻ bảng, watermark Masan còn sót và chuẩn hóa lỗi OCR thường gặp ở cột ĐVT
+        let clean = line
+          .replace(/[|¦[\]{}_~—–]/g, ' ')
+          .replace(/\b(Masan|consumer)\b/gi, ' ')
+          .replace(/\b(Chal|Cha1|Ghai|Chai|cha1|chal|Cnai)\b/gi, 'Chai')
+          .replace(/\b(Thung|Thùng|Tnùng)\b/gi, 'Thùng')
+          .replace(/\b(Loc|Lốc|Léc|Lôc)\b/gi, 'Lốc')
+          .replace(/\b(Tui|Túi|Túl)\b/gi, 'Túi')
+          .replace(/\b(Goi|Gói)\b/gi, 'Gói')
+          .replace(/\b(Hop|Hộp)\b/gi, 'Hộp')
+          .replace(/\s+/g, ' ')
+          .trim();
 
-          if (rawName.length > 2 && quantity > 0) {
-            items.push({ name: rawName, unit, quantity, price });
+        if (clean.length < 6) continue;
+
+        // TẦNG 1: Tìm theo điểm neo Đơn vị tính (Chai, Thùng, Lốc, Túi, Gói, Hộp, Lon, Cái, Bộ, Bình, Két, Vỉ)
+        const unitRegex = /\b(Chai|Thùng|Lốc|Túi|Gói|Hộp|Lon|Cái|Bộ|Bình|Két|Vỉ)\b/i;
+        const unitMatch = clean.match(unitRegex);
+
+        if (unitMatch) {
+          const unitIndex = unitMatch.index;
+          const unit = unitMatch[1];
+          let namePart = clean.slice(0, unitIndex).replace(/^\d+[\s.\-]*\s*/, '').trim();
+          let rightPart = clean.slice(unitIndex + unit.length).trim();
+
+          // Tìm tất cả các cụm số ở phần bên phải ĐVT
+          // Các số có dấu chấm phân cách hàng nghìn (VD: 4.791, 28.746, 7.250, 43.500)
+          const priceTokens = [];
+          const numberTokens = [];
+
+          rightPart.split(/\s+/).forEach(tok => {
+            // Bỏ ký tự đ/₫/d ở cuối số nếu dính liền (VD: 4.791đ -> 4.791)
+            const stripped = tok.replace(/[^0-9.,]/g, '');
+            if (!stripped) return;
+            if (/^\d{1,3}(\.\d{3})+$/.test(stripped)) { priceTokens.push(parseFloat(stripped.replace(/\./g, ''))); } else if (/^\d+([.,]\d+)?$/.test(stripped)) {
+              const val = parseFloat(stripped.replace(',', '.'));
+              if (val > 0) numberTokens.push(val);
+            }
+          });
+
+          let qty = 1;
+          let unitPrice = 0;
+
+          if (priceTokens.length >= 2) {
+            // Có cả Đơn giá và Thành tiền (VD: 4791 và 28746)
+            unitPrice = priceTokens[0];
+            const lineTotal = priceTokens[1];
+            // Nếu có số lượng đọc được hợp lý thì lấy, nếu bị che bởi watermark thì tự tính = Thành tiền / Đơn giá!
+            if (numberTokens.length > 0 && numberTokens[0] < 1000) {
+              qty = numberTokens[0];
+            } else if (unitPrice > 0) {
+              qty = Math.round((lineTotal / unitPrice) * 100) / 100;
+            }
+          } else if (priceTokens.length === 1) {
+            unitPrice = priceTokens[0];
+            if (numberTokens.length > 0 && numberTokens[0] < 1000) {
+              qty = numberTokens[0];
+            }
+          } else if (numberTokens.length >= 2) {
+            qty = numberTokens[0];
+            unitPrice = numberTokens[1];
           }
-          continue;
+
+          if (namePart.length >= 2) {
+            items.push({ name: namePart, unit, quantity: qty || 1, price: unitPrice });
+            continue;
+          }
         }
 
-        // Fallback cho dòng bị OCR đọc lệch nhẹ cột ĐVT
-        const fallbackMatch = line.match(/^(\d+)\s+(.+?)\s+(\d+)\s+([\d.]{4,})\s*[đ₫d]?\s+([\d.]{4,})/i);
-        if (fallbackMatch) {
-          let nameAndUnit = fallbackMatch[2].trim();
-          let unit = 'Chai';
-          const uMatch = nameAndUnit.match(new RegExp(`\\b(${unitKeywords})$`, 'i'));
-          if (uMatch) {
-            unit = uMatch[1];
-            nameAndUnit = nameAndUnit.slice(0, -unit.length).trim();
+        // TẦNG 2 (Dự phòng): Nếu chữ "Chai" bị logo Masan che mất hoàn toàn, tìm các dòng có 2 cụm giá tiền chuẩn Việt Nam ở cuối (VD: ... 4.791 đ 28.746 đ)
+        const pricePairMatch = clean.match(/^(.+?)\s+(?:(\d+(?:[.,]\d+)?)\s+)?(\d{1,3}(?:\.\d{3})+)\s*[^\d\s]*\s+(\d{1,3}(?:\.\d{3})+)\s*[^\d\s]*$/);
+        if (pricePairMatch) {
+          let rawName = pricePairMatch[1].replace(/^\d+[\s.\-]*\s*/, '').trim();
+          const unitPrice = parseFloat(pricePairMatch[3].replace(/\./g, '')) || 0;
+          const lineTotal = parseFloat(pricePairMatch[4].replace(/\./g, '')) || 0;
+          let qty = pricePairMatch[2] ? parseFloat(pricePairMatch[2].replace(',', '.')) : 0;
+
+          if ((!qty || qty > 500) && unitPrice > 0 && lineTotal >= unitPrice) {
+            qty = Math.round((lineTotal / unitPrice) * 100) / 100;
           }
-          const quantity = parseFloat(fallbackMatch[3]) || 1;
-          const price = parseFloat(fallbackMatch[4].replace(/[.,]/g, '')) || 0;
-          items.push({ name: nameAndUnit, unit, quantity, price });
+
+          if (rawName.length >= 3 && unitPrice > 0) {
+            items.push({ name: rawName, unit: 'Chai', quantity: qty || 1, price: unitPrice });
+          }
         }
       }
 
@@ -1841,7 +1957,6 @@
       showToast("Đã xuất file Excel hàng chờ nhận!", "success");
     }
 
-    // Render bảng tổng hợp theo từng sản phẩm & bảng theo ngày
     function renderPendingCards() {
       const container = document.getElementById('pendingCardsContainer');
       const empty = document.getElementById('pendingEmpty');
@@ -1861,7 +1976,6 @@
         badge.classList.add('hidden');
       }
 
-      // ================= BẢNG TỔNG HỢP THEO TỪNG MẶT HÀNG =================
       const prodSummaryTbody = document.getElementById('productSummaryList');
       const prodSummaryEmpty = document.getElementById('productSummaryEmpty');
       prodSummaryTbody.innerHTML = '';
@@ -1953,7 +2067,6 @@
       }
       empty.classList.add('hidden');
 
-      // ================= BẢNG CHI TIẾT THEO TỪNG NGÀY =================
       const groups = {};
       pendingOrders.forEach(item => {
         const d = item.date || 'Chưa đặt ngày';
@@ -1967,7 +2080,6 @@
         const items = groups[dateKey];
         const unreceivedInDay = items.filter(i => !i.received);
 
-        // Nếu bật lọc "Ẩn ngày đã xong"
         if (hideCompleted && unreceivedInDay.length === 0) return;
 
         const dayTotalValue = items.reduce((sum, i) => sum + ((parseFloat(i.quantity) || 0) * (parseFloat(i.price) || 0)), 0);
